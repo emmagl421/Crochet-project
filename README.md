@@ -1,2 +1,11 @@
-# Crochet-project
-Crochet site that uses AI to help you pick a project
+
+  # Yarn Inventory Management
+
+  This is a code bundle for Yarn Inventory Management. The original project is available at https://www.figma.com/design/krmeYetHANCEzd66UJTvem/Yarn-Inventory-Management.
+
+  ## Running the code
+
+  Run `npm i` to install the dependencies.
+
+  Run `npm run dev` to start the development server.
+  
