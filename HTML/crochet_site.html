@@ -1,0 +1,53 @@
+<!DOCTYPE html> 
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="style.cc">
+        <author>Emma Leonard</author>
+        <title>Yarn Stash</title>
+    </head>
+    <header> 
+        <h1>Yarn Stash</h1>
+    </header>   
+    <body>
+        <aside class="sidebar">
+            <button id="all-button">All Inventory</button>
+            <button id="favs">Favorites</button>
+            <button id="in-stock">In Stock</button>
+            <button id="out-of-stock">Out of Stock</button>
+        </aside>
+            
+        <main class="main">
+            <!--Search section-->
+            <search>
+                <!--Add event lisenter for keystroke-->
+                <form id="search-bar" action="#">
+                    <input 
+                    type="search" 
+                    id="yarn-search"
+                    name="q"
+                    placeholder="Search by brand, color, weight..."
+                    aria-label="Searching through site content"
+                    >
+                </form>
+            </search>
+
+            <!--Add cards here when you create a new entry-->
+
+            <!--Example card for testing-->
+            <div class="yarn-card">
+                <div class="color-box">
+                    <!--just holds the color picked in the background color-->
+                </div>
+                <div class="yarn-attributes">
+                    <ul>
+                        <li>Brand:</li>
+                        <li>Color</li>
+                        <li>Weight</li>
+                        <li>Skiens</li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+    </body>
+</html>
