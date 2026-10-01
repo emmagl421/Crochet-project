@@ -1,0 +1,74 @@
+/* 
+Color pallet------------
+White Smoke:     #F5F5F4
+Lavender Blush:  #E5DBE6
+Rosy Taupe:      #BBA0A0
+Soft Periwinkle: #7D80DA
+Dusty Grape:     #55418B
+Ivory:           #F2F7EA
+Lavender Blush2: #E2D9DF
+Pink Orchid:     #DEAFDD
+Glaucous:        #7586C9
+Bright Lavender: #B580D4
+*/
+
+body {
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 16px;
+
+    background-color: #E2D9DF;
+}
+
+h1 {
+    font-size: 45px;
+
+    /* Reset padding*/
+    padding: 0;
+    margin: 0;
+
+    margin-bottom: 5px;
+    border-bottom: solid black 1px;
+}
+
+/*Side bar*/
+.sidebarBtn {
+    /*Reset the buttons look*/
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 18px;
+    outline: none;
+    padding: 0;
+    text-decoration: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+
+    /*Style the buttons*/
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+    width: 150px;
+}
+
+.sidebarBtn:hover {
+    background-color: #F5F5F4;
+    color:  #B580D4;
+}
+
+#yarn-search {
+    border-radius: 20px;
+}
+
+/*Yarn cards*/
+.yarn-card {
+    background-color: #F5F5F4;
+    width: 250px;
+    height: 200px;
+    border-radius: 15px;
+    margin: 5px;
+}
+
+.color-box {
+    border: solid black 1px;
+    border-radius: 15px;
+    width: 225px;
+    height: 125px;
+}
