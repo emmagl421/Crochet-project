@@ -16,41 +16,48 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
         <!--Links to JS and CSS-->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="script.js" defer></script> 
         <link rel="stylesheet" href="style.css">
+
     </head>
     <body>
         <div class="container-fluid d-flex flex-column min-vh-100">
             <h1>Yarn Stash</h1>
 
             <div class="row flex-grow-1">
-                <aside class="col-12 col-md-2 d-flex flex-column gap-2 border-end border-2 pe-0 sidebar">
+                <aside class="col-12 col-md-2 d-flex flex-column gap-2 pe-0 sidebar">
                     <button class="sidebarBtn" id="all-button">All Inventory</button>
                     <button class="sidebarBtn" id="favs">Favorites</button>
                     <button class="sidebarBtn" id="in-stock">In Stock</button>
                     <button class="sidebarBtn" id="out-of-stock">Out of Stock</button>
                 </aside>
 
-                <main class="col-12 col-md-10 main">
+                <main class="col-12 col-md main">
                     <!--Search section-->
-                    <search>
-                        <!--Add event lisenter for keystroke-->
-                        <form id="search-bar" action="#">
-                            <div class="position-relative">
-                                <input 
-                                    type="search" 
-                                    id="yarn-search"
-                                    name="q"
-                                    class="form-control"
-                                    placeholder="Search by brand, color, weight..."
-                                    aria-label="Searching through site content"
-                                >
+                    <div class="container-fuild d-flex flex-row">
+                        <search class="col-12 col-md">
+                            <!--Add event lisenter for keystroke-->
+                            <form id="search-bar" action="#">
+                                <div class="position-relative">
+                                    <input 
+                                        type="search" 
+                                        id="yarn-search"
+                                        name="q"
+                                        class="form-control"
+                                        placeholder="Search by brand, color, weight..."
+                                        aria-label="Searching through site content"
+                                    >
 
-                                <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3 text-secondary search-icon"></i>
-                                
-                            </div>
-                        </form>
-                    </search>
+                                    <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3 text-secondary search-icon"></i>
+                                    
+                                </div>
+                            </form>
+                        </search>
+
+                        <!--Add yarn button-->
+                        <button class="row-12 row-md" id="addYarn">Add Yarn</button> 
+                    </div>    
 
                     <!--Add cards here when you create a new entry-->
 
