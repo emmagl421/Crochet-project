@@ -26,7 +26,7 @@
             <h1>Yarn Stash</h1>
 
             <div class="row flex-grow-1">
-                <aside class="col-12 col-md-2 d-flex flex-column gap-2 pe-0 sidebar">
+                <aside class="col-12 col-md-auto d-flex flex-column gap-2 pe-0 sidebar">
                     <button class="sidebarBtn" id="all-button">All Inventory</button>
                     <button class="sidebarBtn" id="favs">Favorites</button>
                     <button class="sidebarBtn" id="in-stock">In Stock</button>
@@ -56,26 +56,79 @@
                         </search>
 
                         <!--Add yarn button-->
-                        <button class="row-12 row-md" id="addYarn">Add Yarn</button> 
+                        <button class="row-12 row-md" id="addYarn" data-bs-toggle="modal" data-bs-target="#addYarnModal" >Add Yarn</button> 
                     </div>    
 
                     <!--Add cards here when you create a new entry-->
-
-                    <!--Example card for testing-->
-                    <div class="yarn-card">
-                        <div class="color-box">
-                            <!--just holds the color picked in the background color-->
-                        </div>
-                        <div class="yarn-attributes">
-                            <ul class="list-unstyled row row-cols-2 g-2 mb-0">
-                                <li class="col">Brand:</li>
-                                <li class="col">Color:</li>
-                                <li class="col">Weight:</li>
-                                <li class="col">Skiens:</li>
-                            </ul>
+                    <div class="col-12 col-md-4 yarn-cards">
+                        <!--Example card for testing-->
+                        <div class="yarn-card">
+                            <div class="color-box">
+                                <!--just holds the color picked in the background color-->
+                            </div>
+                            <div class="yarn-attributes">
+                                <ul class="list-unstyled row row-cols-2 g-2 mb-0">
+                                    <li class="col">Brand:</li>
+                                    <li class="col">Color:</li>
+                                    <li class="col">Weight:</li>
+                                    <li class="col">Skiens:</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+                    
                 </main>
+
+                <div class="modal fade" id="addYarnModal" tabindex="-1" role="addYarn">
+                    <div class="modal-dialog modal-dialog-centered" role="addYarn">
+                        <div class="modal-content custom-addYarn-modal">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add Yarn</h5>
+                                <button type="button" class="ms-auto me-0 close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="color-picker-container">
+                                    <input id="color-picker" type="color">
+                                </div>
+                                <div class="yarn-attrs">
+                                    <label for="brands-input">Brand:</label>
+                                    <input id="brands-input" type="text" name="brands" placeholder="Type the brand name">
+
+                                    <label for="color-input">Color Name:</label>
+                                    <input id="color-input" type="text" name="colors" placeholder="Type the color name">
+
+                                    <div class="dropdown weight">
+                                        <button class="dropdown-toggle" type="button" id="weight-drop-down" data-bs-toggle="dropdown">
+                                            Select a weight
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <li class="dropdown-item">1-Superfine</li>
+                                            <li class="dropdown-item">2-Fine</li>
+                                            <li class="dropdown-item">3-Light</li>
+                                            <li class="dropdown-item">4-Medium</li>
+                                            <li class="dropdown-item">5-Bulky</li>
+                                            <li class="dropdown-item">6-Super Bulky</li>
+                                            <li class="dropdown-item">7-Jumbo</li>
+                                        </div>
+                                    </div>
+
+                                   
+
+                                    <input id="skiens" type="number" name="skiens" min="1"s placeholder="Number of skiens">
+
+
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>

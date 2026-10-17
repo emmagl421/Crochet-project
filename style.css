@@ -20,13 +20,14 @@ body {
 }
 
 h1 {
-    font-size: 45px;
+    font-size: 35px;
 
     /* Reset padding*/
     padding: 0;
     margin: 0;
 
     margin-bottom: 5px;
+    margin-top: 5px;
     border-bottom: solid black 1px;
 }
 
@@ -49,11 +50,14 @@ aside {
     border: none;
     background: none;
     cursor: pointer;
+    text-align: left;
 
     /*Style the buttons*/
     border-radius: 5px;
     padding: 5px 10px 5px 10px;
     width: 150px;
+    margin-left: 5px;
+    margin-top: 5px;
 }
 
 .sidebarBtn:hover {
@@ -64,6 +68,8 @@ aside {
 #yarn-search {
     border-radius: 20px;
     width: 100%;
+    background-color: #F5F5F4;
+    margin-bottom: 5px;
 }
 
 /*Yarn cards*/
@@ -81,6 +87,7 @@ aside {
     width: 100%;
     height: 115px;
     margin-bottom: 15px;
+    cursor: pointer;
 }
 
 /*Add yarn button*/
@@ -97,8 +104,7 @@ aside {
 
     /*Style the buttons*/
     border-radius: 20px;
-    border: solid #F5F5F4 2px;
-    padding: 5px 5px 5px 5px;
+    border: solid #F5F5F4 2px; 
     width: 100px;
 
     margin-left: 5px;
@@ -106,8 +112,41 @@ aside {
 }
 
 #addYarn:hover {
- 
-    /*Style the buttons*/
+    /*Style the button*/
     background-color: #F5F5F4;
     color: #B580D4;
+}
+
+
+/*Modal*/
+.custom-addYarn-modal {
+    /*Reset look*/
+    font-family: "Nunito Sans", sans-serif;
+    outline: none;
+    padding: 0;
+    text-decoration: none;
+    background-color: #F5F5F4;
+    
+    border-radius: 20px;
+    height: 500px;
+    width: 85%;
+}
+
+.modal-header {
+    border-bottom: 0;
+}
+
+.modal-footer {
+    border-top: 0;
+}
+
+.close { 
+    /*Reset look*/
+    outline: none;
+    padding: 0;
+    border: none;
+    text-decoration: none;
+    background-color: #F5F5F4;
+
+    font-size: 20px;
 }
