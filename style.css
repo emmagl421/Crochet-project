@@ -26,8 +26,9 @@ h1 {
     padding: 0;
     margin: 0;
 
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     margin-top: 5px;
+    padding-bottom: 5px;
     border-bottom: solid black 1px;
 }
 
@@ -35,7 +36,8 @@ aside {
     background-color: #F5F5F4;
     border-radius: 25px;
 
-    margin: 10px;
+    margin: 10px 5px 10px 10px;
+
     padding-top: 10px;
 }
 
@@ -69,7 +71,6 @@ aside {
     border-radius: 20px;
     width: 100%;
     background-color: #F5F5F4;
-    margin-bottom: 5px;
 }
 
 /*Yarn cards*/
@@ -128,12 +129,16 @@ aside {
     background-color: #F5F5F4;
     
     border-radius: 20px;
-    height: 500px;
-    width: 85%;
+    width: 100%;
 }
 
 .modal-header {
     border-bottom: 0;
+    padding-bottom: 5px;
+}
+
+.modal-title {
+    font-size: 30px;
 }
 
 .modal-footer {
@@ -149,4 +154,231 @@ aside {
     background-color: #F5F5F4;
 
     font-size: 20px;
+    padding-right: 5px;
 }
+
+.modal-body {
+    padding-top: 5px;
+}
+
+#color-banner {
+    width: 100%;
+    height: 65px;
+    border-radius: 15px;
+}
+
+input[type="color"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: solid black 1px;
+  border-radius: 15px;
+  background: none;
+  cursor: pointer;
+}
+
+/* Chrome, Edge, Safari */
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+}
+
+.yarn-attrs {
+    margin-top: 10px;
+    padding-left: 10px;
+    padding-right:10px;
+}
+
+#brands-input {
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 18px;
+    outline: none;
+    padding: 0;
+    text-decoration: none;
+    border: solid black 1px;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+
+    padding-left: 5px;
+}
+
+#brands-label {
+    font-size: 20px;
+}
+
+#color-input {
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 18px;
+    outline: none;
+    padding: 0;
+    text-decoration: none;
+    border: solid black 1px;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+
+    padding-left: 5px;
+    margin-bottom: 20px;
+}
+
+#color-input-label {
+    font-size: 20px;
+}
+
+#color-label {
+    font-size: 20px;
+}
+
+#weight-label {
+    font-size: 20px;
+}
+
+#skeins-label {
+    font-size: 20px;
+}
+
+#skeins {
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 18px;
+    outline: none;
+    padding: 0;
+    text-decoration: none;
+    border: solid black 1px;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+
+    padding-left: 5px;
+    margin-bottom: 20px;
+}
+
+.dropdown-toggle {
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 18px;
+    outline: none;
+    padding: 0;
+    text-decoration: none;
+    border: solid black 1px;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+    color: gray;
+
+    padding-left: 5px;
+    margin-bottom: 20px;
+
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-toggle {
+    position: relative;
+    padding-right: 2rem;    
+    vertical-align: middle; 
+}
+.dropdown-toggle::after {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+}
+
+#color-category-label {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.color-category {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 40px); 
+    gap: 8px;                              
+    justify-content: left;             
+}
+
+.color-category > * {
+    width: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.color {
+    border: solid black 1px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 40px;
+    height: 40px;
+}
+
+.color-btn {
+    outline: none;
+    padding: 0;
+    text-decoration: none;
+    border: solid black 1px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    padding: 5px;
+
+    width: 85%;
+    height: 85%;
+
+}
+
+#brown {
+    background-color: #663300;
+}
+
+#pink {
+    background-color: #FF99D6;
+}
+
+#red {
+    background-color: #FF2400;
+}
+
+#orange {
+    background-color: #FF6700;
+}
+
+#yellow {
+    background-color: #FFF800;
+}
+
+#green {
+    background-color: #00CC00;
+}
+
+#blue {
+    background-color: #0080FF;
+}
+
+#purple {
+    background-color: #A166FF;
+}
+
+#black {
+    background-color: black;
+}
+
+#white {
+    background-color: white;
+}
+
+#multi {
+    background: conic-gradient(#FF2400, #FFF800, #00CC00, #0080FF, #A166FF);
+}
+
+
+

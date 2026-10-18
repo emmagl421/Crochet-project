@@ -26,17 +26,17 @@
             <h1>Yarn Stash</h1>
 
             <div class="row flex-grow-1">
-                <aside class="col-12 col-md-auto d-flex flex-column gap-2 pe-0 sidebar">
+                <aside class="col-auto d-flex flex-column gap-2 pe-0 sidebar">
                     <button class="sidebarBtn" id="all-button">All Inventory</button>
                     <button class="sidebarBtn" id="favs">Favorites</button>
                     <button class="sidebarBtn" id="in-stock">In Stock</button>
                     <button class="sidebarBtn" id="out-of-stock">Out of Stock</button>
                 </aside>
 
-                <main class="col-12 col-md main">
+                <main class="col main">
                     <!--Search section-->
-                    <div class="container-fuild d-flex flex-row">
-                        <search class="col-12 col-md">
+                    <div class="container-fluid d-flex flex-row px-0 mb-1">
+                        <search class="flex-grow-1">
                             <!--Add event lisenter for keystroke-->
                             <form id="search-bar" action="#">
                                 <div class="position-relative">
@@ -56,7 +56,7 @@
                         </search>
 
                         <!--Add yarn button-->
-                        <button class="row-12 row-md" id="addYarn" data-bs-toggle="modal" data-bs-target="#addYarnModal" >Add Yarn</button> 
+                        <button class="flex-shrink-0" id="addYarn" data-bs-toggle="modal" data-bs-target="#addYarnModal" >Add Yarn</button> 
                     </div>    
 
                     <!--Add cards here when you create a new entry-->
@@ -83,23 +83,30 @@
                     <div class="modal-dialog modal-dialog-centered" role="addYarn">
                         <div class="modal-content custom-addYarn-modal">
                             <div class="modal-header">
-                                <h5 class="modal-title">Add Yarn</h5>
+                                <h5 class="modal-title">Add New Yarn</h5>
                                 <button type="button" class="ms-auto me-0 close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <div id="color-picker-container">
-                                    <input id="color-picker" type="color">
+                                <div id="color-banner">
+                                   <input id="color-picker" type="color">
                                 </div>
-                                <div class="yarn-attrs">
-                                    <label for="brands-input">Brand:</label>
-                                    <input id="brands-input" type="text" name="brands" placeholder="Type the brand name">
 
-                                    <label for="color-input">Color Name:</label>
-                                    <input id="color-input" type="text" name="colors" placeholder="Type the color name">
+                                <div class="row yarn-attrs">
+                                    <div class="col-6 brand">
+                                        <label id="brands-label" for="brands-input">Brand:</label>
+                                        <input id="brands-input" type="text" name="brands" placeholder="Type the brand name">
+                                    </div>
+                                    
+                                    <div class="col-6">
+                                        <label id="color-input-label" for="color-input">Color name:</label>
+                                        <input id="color-input" type="text" name="colors" placeholder="Type the color name">
+                                    </div>
 
-                                    <div class="dropdown weight">
+                                    
+                                    <div class="col-6 dropdown weight">
+                                        <label id="weight-label" for="dropdown-toggle">Weight:</label>
                                         <button class="dropdown-toggle" type="button" id="weight-drop-down" data-bs-toggle="dropdown">
                                             Select a weight
                                         </button>
@@ -114,16 +121,63 @@
                                         </div>
                                     </div>
 
-                                   
+                                    <div class="col-6">
+                                        <label id="skeins-label" for="skeins">Skeins:</label>
+                                        <input id="skeins" type="number" name="skiens" min="1"s placeholder="Number of skiens">
+                                    </div>
 
-                                    <input id="skiens" type="number" name="skiens" min="1"s placeholder="Number of skiens">
+                                    <div class="col-12">
+                                        <label id="color-category-label">Color category:</label>
+                                        <div class="row g-1 color-category">
+                                            <div class="col-2 d-flex justify-content-center">
+                                                <div class="color"><button type="button" class="color-btn" id="brown"></button></div>
+                                            </div>
 
+                                            <div class="col-2 d-flex justify-content-center">
+                                                <div class="color"><button type="button" class="color-btn" id="pink"></button></div>
+                                            </div>
 
+                                            <div class="col-2 d-flex justify-content-center">
+                                                <div class="color"><button type="button" class="color-btn" id="red"></button></div>
+                                            </div>
+
+                                            <div class="col-2 d-flex justify-content-center">
+                                                <div class="color"><button type="button" class="color-btn" id="orange"></button></div>
+                                            </div>
+
+                                            <div class="col-2 d-flex justify-content-center">
+                                                <div class="color"><button type="button" class="color-btn" id="yellow"></button></div>
+                                            </div>
+
+                                            <div class="col-2 d-flex justify-content-center">
+                                                <div class="color"><button type="button" class="color-btn" id="green"></button></div>
+                                            </div>
+
+                                            <div class="col-2 d-flex justify-content-center">
+                                                <div class="color"><button type="button" class="color-btn" id="blue"></button></div>
+                                            </div>
+
+                                            <div class="col-2 d-flex justify-content-center">
+                                                <div class="color"><button type="button" class="color-btn" id="purple"></button></div>
+                                            </div>
+
+                                            <div class="col-2 d-flex justify-content-center">
+                                                <div class="color"><button type="button" class="color-btn" id="black"></button></div>
+                                            </div>
+
+                                            <div class="col-2 d-flex justify-content-center">
+                                                <div class="color"><button type="button" class="color-btn" id="white"></button></div>
+                                            </div>
+
+                                            <div class="col-2 d-flex justify-content-center">
+                                                <div class="color"><button type="button" class="color-btn" id="multi"></button></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-primary">Save changes</button>
+                                <button type="button" class="btn btn-primary">Add Yarn</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </div>
