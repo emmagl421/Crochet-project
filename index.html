@@ -27,7 +27,7 @@
 
             <div class="row flex-grow-1">
                 <aside class="col-auto d-flex flex-column gap-2 pe-0 sidebar">
-                    <button class="sidebarBtn" id="all-button">All Inventory</button>
+                    <button class="sidebarBtn" id="inventory">All Inventory</button>
                     <button class="sidebarBtn" id="favs">Favorites</button>
                     <button class="sidebarBtn" id="in-stock">In Stock</button>
                     <button class="sidebarBtn" id="out-of-stock">Out of Stock</button>
@@ -84,7 +84,7 @@
                         <div class="modal-content custom-addYarn-modal">
                             <div class="modal-header">
                                 <h5 class="modal-title">Add New Yarn</h5>
-                                <button type="button" class="ms-auto me-0 close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" id="close-btn" class="ms-auto me-0 close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -177,8 +177,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-primary">Add Yarn</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" id="addBtn" class="btn btn-primary">Add Yarn</button>
                             </div>
                         </div>
                     </div>
