@@ -16,6 +16,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
         <!--Links to JS and CSS-->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="script.js" defer></script> 
         <link rel="stylesheet" href="style.css">
@@ -56,23 +57,40 @@
                         </search>
 
                         <!--Add yarn button-->
-                        <button class="flex-shrink-0" id="addYarn" data-bs-toggle="modal" data-bs-target="#addYarnModal" >Add Yarn</button> 
+                        <button class="flex-shrink-0" id="addYarn" data-bs-toggle="modal" data-bs-target="#login-modal" >Add Yarn</button> 
                     </div>    
 
                     <!--Add cards here when you create a new entry-->
                     <div class="col-12 col-md-4 yarn-cards">
                         <!--Example card for testing-->
-                        <div class="yarn-card">
-                            <div class="color-box">
+                        <div class="card position-relative p-3 yarn-card" id="0">
+                            <div class="position-absolute top-0 end-0 m-2 z-3 favorite">
+                                <button id="favBtn" class="btn btn-link p-0 text-warning fs-4">
+                                    <i class="bi bi-star" id="star"></i>
+                                </button>
+                            </div>
+                            <div class="rounded mb-3 color-box">
                                 <!--just holds the color picked in the background color-->
                             </div>
                             <div class="yarn-attributes">
-                                <ul class="list-unstyled row row-cols-2 g-2 mb-0">
-                                    <li class="col">Brand:</li>
-                                    <li class="col">Color:</li>
-                                    <li class="col">Weight:</li>
-                                    <li class="col">Skiens:</li>
-                                </ul>
+                                <div class="row row-cols-2 gx-3 gy-2">
+                                    <div class="col">
+                                        <div class="small text-muted">Brand</div>
+                                        <div class="fw-semibold text-break" id="brand">Lion Brand</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="small text-muted">Color</div>
+                                        <div class="fw-semibold text-break" id="color">Dusty Rose</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="small text-muted">Weight</div>
+                                        <div class="fw-semibold text-break" id="weight">Worsted</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="small text-muted">Skeins</div>
+                                        <div class="fw-semibold text-break" id="skeins">3</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -123,7 +141,7 @@
 
                                     <div class="col-6">
                                         <label id="skeins-label" for="skeins">Skeins:</label>
-                                        <input id="skeins" type="number" name="skiens" min="1"s placeholder="Number of skiens">
+                                        <input id="skeins-input" type="number" name="skiens" min="1"s placeholder="Number of skiens">
                                     </div>
 
                                     <div class="col-12">
@@ -178,6 +196,40 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" id="addBtn" class="btn btn-primary">Add Yarn</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="login-modal" tabindex="-1" role="login">
+                    <div class="modal-dialog modal-dialog-centered" role="addYarn">
+                        <div class="modal-content custom-addYarn-modal">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Login</h5>
+                                <button type="button" id="close-btn" class="ms-auto me-0 close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div id="login" class="modal-body">
+                                <div class="mx-auto login-info">
+                                     <div class="col mb-3">
+                                        <div id="email-title" class="small text-muted d-block mb-1">Email</div>
+                                        <input class="login-input" id="email-input" type="text" name="email" placeholder="TloveYarn@yarns.com">
+                                    </div>
+                                    <div class="col mb-3">
+                                        <div id="password-title" class="small text-muted d-block mb-1">Password</div>
+                                        <input class="login-input" id="password-input" type="text" name="password" placeholder="Enter your password">
+                                    </div>
+                                    <div class="col mb-3">
+                                        <button id="login-help">Forgot your password?</button>
+                                    </div>
+                                    <div class="col">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="addBtn" class="btn btn-primary">Login</button>
                             </div>
                         </div>
                     </div>

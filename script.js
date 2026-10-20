@@ -1,4 +1,10 @@
 $(document).ready(function () {
+    //Set up supabase 
+    const SUPABASE_URL = 'https://ohcluiybdrddnwauhhwl.supabase.co/rest/v1/';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oY2x1aXliZHJkZG53YXVoaHdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0Mjk3MzIsImV4cCI6MjEwODAwNTczMn0.nkh7C5YqXO85jOhMP_MPyqGDir9aJ1uzQ-nDzA_0a0s';
+
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     //Display the inventory view off start
     displayInventory();
 
@@ -22,9 +28,14 @@ $(document).ready(function () {
     function displayOutOfStock() {
 
     }
-
+    
 
     //Buttons -----------------------------------------
+    //Favorite button
+    $('#favBtn').on('click', function () {
+        $('#star').toggleClass('bi-star bi-star-fill');
+    });
+
     //Close button for modal
     $('#close-btn').on('click', function () {
         $('#addYarnModal').modal('hide');
