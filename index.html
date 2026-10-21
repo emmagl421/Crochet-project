@@ -1,237 +1,219 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Yarn Stash</title>
 
-        <!--Font link-->
+        <!--Fonts-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,100&family=Nunito+Sans:opsz,wght@6..12,400..800&display=swap" rel="stylesheet">
+
+        <!--jQuery-->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
         <!--Bootstrap-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
         <!--Links to JS and CSS-->
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <script src="script.js" defer></script> 
+        <script src="script.js" defer></script>
         <link rel="stylesheet" href="style.css">
-
     </head>
     <body>
-        <div class="container-fluid d-flex flex-column min-vh-100">
-            <h1>Yarn Stash</h1>
+        <div class="app">
+            <!--Top bar-->
+            <header class="topbar">
+                <h1 class="wordmark">Yarn Stash</h1>
+            </header>
 
-            <div class="row flex-grow-1">
-                <aside class="col-auto d-flex flex-column gap-2 pe-0 sidebar">
-                    <button class="sidebarBtn" id="inventory">All Inventory</button>
-                    <button class="sidebarBtn" id="favs">Favorites</button>
-                    <button class="sidebarBtn" id="in-stock">In Stock</button>
-                    <button class="sidebarBtn" id="out-of-stock">Out of Stock</button>
+            <div class="app-body">
+                <!--Sidebar-->
+                <aside class="sidebar" aria-label="Filter inventory">
+                    <nav class="sidebar-nav">
+                        <button class="sidebarBtn active" id="inventory">
+                            <i class="bi bi-grid" aria-hidden="true"></i>
+                            <span>All inventory</span>
+                        </button>
+                        <button class="sidebarBtn" id="favs">
+                            <i class="bi bi-star" aria-hidden="true"></i>
+                            <span>Favorites</span>
+                        </button>
+                        <button class="sidebarBtn" id="in-stock">
+                            <i class="bi bi-check-circle" aria-hidden="true"></i>
+                            <span>In stock</span>
+                        </button>
+                        <button class="sidebarBtn" id="out-of-stock">
+                            <i class="bi bi-dash-circle" aria-hidden="true"></i>
+                            <span>Out of stock</span>
+                        </button>
+                    </nav>
                 </aside>
 
-                <main class="col main">
-                    <!--Search section-->
-                    <div class="container-fluid d-flex flex-row px-0 mb-1">
-                        <search class="flex-grow-1">
-                            <!--Add event lisenter for keystroke-->
-                            <form id="search-bar" action="#">
-                                <div class="position-relative">
-                                    <input 
-                                        type="search" 
-                                        id="yarn-search"
-                                        name="q"
-                                        class="form-control"
-                                        placeholder="Search by brand, color, weight..."
-                                        aria-label="Searching through site content"
-                                    >
-
-                                    <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3 text-secondary search-icon"></i>
-                                    
-                                </div>
+                <main class="main">
+                    <!--Toolbar: search + add-->
+                    <div class="toolbar">
+                        <search class="toolbar-search">
+                            <form id="search-bar" action="#" role="search">
+                                <label for="yarn-search" class="visually-hidden">Search your stash</label>
+                                <i class="bi bi-search search-icon" aria-hidden="true"></i>
+                                <input
+                                    type="search"
+                                    id="yarn-search"
+                                    name="q"
+                                    class="search-input"
+                                    placeholder="Search by brand, color, weight…"
+                                >
                             </form>
                         </search>
 
-                        <!--Add yarn button-->
-                        <button class="flex-shrink-0" id="addYarn" data-bs-toggle="modal" data-bs-target="#login-modal" >Add Yarn</button> 
-                    </div>    
+                        <button class="btn-primary-ys" id="addYarn">
+                            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                            <span>Add yarn</span>
+                        </button>
+                    </div>
 
-                    <!--Add cards here when you create a new entry-->
-                    <div class="col-12 col-md-4 yarn-cards">
+                    <!--Cards get added here-->
+                    <div class="yarn-cards">
                         <!--Example card for testing-->
-                        <div class="card position-relative p-3 yarn-card" id="0">
-                            <div class="position-absolute top-0 end-0 m-2 z-3 favorite">
-                                <button id="favBtn" class="btn btn-link p-0 text-warning fs-4">
-                                    <i class="bi bi-star" id="star"></i>
-                                </button>
-                            </div>
-                            <div class="rounded mb-3 color-box">
-                                <!--just holds the color picked in the background color-->
-                            </div>
+                        <article class="yarn-card" id="0">
+                            <div class="color-box" style="background-color: #C98B95;"></div>
+
+                            <button id="favBtn" class="fav-btn" aria-label="Add to favorites">
+                                <i class="bi bi-star" id="star"></i>
+                            </button>
+
                             <div class="yarn-attributes">
-                                <div class="row row-cols-2 gx-3 gy-2">
-                                    <div class="col">
-                                        <div class="small text-muted">Brand</div>
-                                        <div class="fw-semibold text-break" id="brand">Lion Brand</div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="small text-muted">Color</div>
-                                        <div class="fw-semibold text-break" id="color">Dusty Rose</div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="small text-muted">Weight</div>
-                                        <div class="fw-semibold text-break" id="weight">Worsted</div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="small text-muted">Skeins</div>
-                                        <div class="fw-semibold text-break" id="skeins">3</div>
-                                    </div>
+                                <div class="yarn-title">
+                                    <div class="yarn-color-name" id="color">Dusty Rose</div>
+                                    <div class="yarn-brand" id="brand">Lion Brand</div>
                                 </div>
+                                <dl class="yarn-meta">
+                                    <div>
+                                        <dt>Weight</dt>
+                                        <dd id="weight">Worsted</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Skeins</dt>
+                                        <dd id="skeins">3</dd>
+                                    </div>
+                                </dl>
                             </div>
+                        </article>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <!--Add yarn modal-->
+        <div class="modal fade" id="addYarnModal" tabindex="-1" aria-labelledby="addYarnTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content ys-modal custom-addYarn-modal">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="addYarnTitle">Add new yarn</h2>
+                        <button type="button" id="close-btn" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div id="color-banner">
+                            <input id="color-picker" type="color" value="#B580D4" aria-label="Pick the yarn color">
+                            <span class="color-banner-hint"><i class="bi bi-eyedropper" aria-hidden="true"></i> Tap to match the color</span>
+                        </div>
+
+                        <div class="yarn-attrs">
+                            <div class="field">
+                                <label for="brands-input">Brand</label>
+                                <input id="brands-input" class="ys-input" type="text" name="brands" placeholder="e.g. Lion Brand">
+                            </div>
+
+                            <div class="field">
+                                <label for="color-input">Color name</label>
+                                <input id="color-input" class="ys-input" type="text" name="colors" placeholder="e.g. Dusty Rose">
+                            </div>
+
+                            <div class="field dropdown weight">
+                                <label for="weight-drop-down">Weight</label>
+                                <button class="dropdown-toggle ys-input" type="button" id="weight-drop-down" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Select a weight
+                                </button>
+                                <ul class="dropdown-menu ys-dropdown">
+                                    <li class="dropdown-item">1-Superfine</li>
+                                    <li class="dropdown-item">2-Fine</li>
+                                    <li class="dropdown-item">3-Light</li>
+                                    <li class="dropdown-item">4-Medium</li>
+                                    <li class="dropdown-item">5-Bulky</li>
+                                    <li class="dropdown-item">6-Super Bulky</li>
+                                    <li class="dropdown-item">7-Jumbo</li>
+                                </ul>
+                            </div>
+
+                            <div class="field">
+                                <label for="skeins-input">Skeins</label>
+                                <input id="skeins-input" class="ys-input" type="number" name="skeins" min="1" placeholder="How many?">
+                            </div>
+
+                            <fieldset class="field field-full">
+                                <legend>Color category</legend>
+                                <div class="color-category">
+                                    <div class="color"><button type="button" class="color-btn" id="brown" aria-label="Brown" title="Brown"></button></div>
+                                    <div class="color"><button type="button" class="color-btn" id="pink" aria-label="Pink" title="Pink"></button></div>
+                                    <div class="color"><button type="button" class="color-btn" id="red" aria-label="Red" title="Red"></button></div>
+                                    <div class="color"><button type="button" class="color-btn" id="orange" aria-label="Orange" title="Orange"></button></div>
+                                    <div class="color"><button type="button" class="color-btn" id="yellow" aria-label="Yellow" title="Yellow"></button></div>
+                                    <div class="color"><button type="button" class="color-btn" id="green" aria-label="Green" title="Green"></button></div>
+                                    <div class="color"><button type="button" class="color-btn" id="blue" aria-label="Blue" title="Blue"></button></div>
+                                    <div class="color"><button type="button" class="color-btn" id="purple" aria-label="Purple" title="Purple"></button></div>
+                                    <div class="color"><button type="button" class="color-btn" id="black" aria-label="Black" title="Black"></button></div>
+                                    <div class="color"><button type="button" class="color-btn" id="white" aria-label="White" title="White"></button></div>
+                                    <div class="color"><button type="button" class="color-btn" id="multi" aria-label="Multicolor" title="Multicolor"></button></div>
+                                </div>
+                            </fieldset>
                         </div>
                     </div>
-                    
-                </main>
 
-                <div class="modal fade" id="addYarnModal" tabindex="-1" role="addYarn">
-                    <div class="modal-dialog modal-dialog-centered" role="addYarn">
-                        <div class="modal-content custom-addYarn-modal">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Add New Yarn</h5>
-                                <button type="button" id="close-btn" class="ms-auto me-0 close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div id="color-banner">
-                                   <input id="color-picker" type="color">
-                                </div>
-
-                                <div class="row yarn-attrs">
-                                    <div class="col-6 brand">
-                                        <label id="brands-label" for="brands-input">Brand:</label>
-                                        <input id="brands-input" type="text" name="brands" placeholder="Type the brand name">
-                                    </div>
-                                    
-                                    <div class="col-6">
-                                        <label id="color-input-label" for="color-input">Color name:</label>
-                                        <input id="color-input" type="text" name="colors" placeholder="Type the color name">
-                                    </div>
-
-                                    
-                                    <div class="col-6 dropdown weight">
-                                        <label id="weight-label" for="dropdown-toggle">Weight:</label>
-                                        <button class="dropdown-toggle" type="button" id="weight-drop-down" data-bs-toggle="dropdown">
-                                            Select a weight
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <li class="dropdown-item">1-Superfine</li>
-                                            <li class="dropdown-item">2-Fine</li>
-                                            <li class="dropdown-item">3-Light</li>
-                                            <li class="dropdown-item">4-Medium</li>
-                                            <li class="dropdown-item">5-Bulky</li>
-                                            <li class="dropdown-item">6-Super Bulky</li>
-                                            <li class="dropdown-item">7-Jumbo</li>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-6">
-                                        <label id="skeins-label" for="skeins">Skeins:</label>
-                                        <input id="skeins-input" type="number" name="skiens" min="1"s placeholder="Number of skiens">
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label id="color-category-label">Color category:</label>
-                                        <div class="row g-1 color-category">
-                                            <div class="col-2 d-flex justify-content-center">
-                                                <div class="color"><button type="button" class="color-btn" id="brown"></button></div>
-                                            </div>
-
-                                            <div class="col-2 d-flex justify-content-center">
-                                                <div class="color"><button type="button" class="color-btn" id="pink"></button></div>
-                                            </div>
-
-                                            <div class="col-2 d-flex justify-content-center">
-                                                <div class="color"><button type="button" class="color-btn" id="red"></button></div>
-                                            </div>
-
-                                            <div class="col-2 d-flex justify-content-center">
-                                                <div class="color"><button type="button" class="color-btn" id="orange"></button></div>
-                                            </div>
-
-                                            <div class="col-2 d-flex justify-content-center">
-                                                <div class="color"><button type="button" class="color-btn" id="yellow"></button></div>
-                                            </div>
-
-                                            <div class="col-2 d-flex justify-content-center">
-                                                <div class="color"><button type="button" class="color-btn" id="green"></button></div>
-                                            </div>
-
-                                            <div class="col-2 d-flex justify-content-center">
-                                                <div class="color"><button type="button" class="color-btn" id="blue"></button></div>
-                                            </div>
-
-                                            <div class="col-2 d-flex justify-content-center">
-                                                <div class="color"><button type="button" class="color-btn" id="purple"></button></div>
-                                            </div>
-
-                                            <div class="col-2 d-flex justify-content-center">
-                                                <div class="color"><button type="button" class="color-btn" id="black"></button></div>
-                                            </div>
-
-                                            <div class="col-2 d-flex justify-content-center">
-                                                <div class="color"><button type="button" class="color-btn" id="white"></button></div>
-                                            </div>
-
-                                            <div class="col-2 d-flex justify-content-center">
-                                                <div class="color"><button type="button" class="color-btn" id="multi"></button></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" id="addBtn" class="btn btn-primary">Add Yarn</button>
-                            </div>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-ghost-ys" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" id="addBtn" class="btn-primary-ys">Add yarn</button>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="modal fade" id="login-modal" tabindex="-1" role="login">
-                    <div class="modal-dialog modal-dialog-centered" role="addYarn">
-                        <div class="modal-content custom-addYarn-modal">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Login</h5>
-                                <button type="button" id="close-btn" class="ms-auto me-0 close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+        <!--Login modal-->
+        <div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="loginTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content ys-modal login-modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="loginTitle">Log in</h2>
+                        <button type="button" id="close-btn" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div id="login" class="modal-body">
+                        <p class="modal-lede">Log in to add yarn to your stash.</p>
+                        <div class="login-info">
+                            <div class="field">
+                                <label for="email-input" id="email-title">Email</label>
+                                <input class="ys-input login-input" id="email-input" type="email" name="email" autocomplete="email" placeholder="you@example.com">
                             </div>
-                            <div id="login" class="modal-body">
-                                <div class="mx-auto login-info">
-                                     <div class="col mb-3">
-                                        <div id="email-title" class="small text-muted d-block mb-1">Email</div>
-                                        <input class="login-input" id="email-input" type="text" name="email" placeholder="TloveYarn@yarns.com">
-                                    </div>
-                                    <div class="col mb-3">
-                                        <div id="password-title" class="small text-muted d-block mb-1">Password</div>
-                                        <input class="login-input" id="password-input" type="text" name="password" placeholder="Enter your password">
-                                    </div>
-                                    <div class="col mb-3">
-                                        <button id="login-help">Forgot your password?</button>
-                                    </div>
-                                    <div class="col">
-
-                                    </div>
+                            <div class="field">
+                                <div class="label-row">
+                                    <label for="password-input" id="password-title">Password</label>
+                                    <button type="button" class="link-btn" id="login-help">Forgot password?</button>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" id="addBtn" class="btn btn-primary">Login</button>
+                                <input class="ys-input login-input" id="password-input" type="password" name="password" autocomplete="current-password" placeholder="Enter your password">
                             </div>
                         </div>
+                    </div>
+
+                    <div class="modal-footer login-footer">
+                        <button type="button" id="addBtn" class="btn-primary-ys w-100">Log in</button>
+                        <p class="signup-row">
+                            New here?
+                            <button type="button" class="link-btn" id="sign-up-login">Create an account</button>
+                        </p>
                     </div>
                 </div>
             </div>
