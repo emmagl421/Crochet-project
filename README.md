@@ -33,3 +33,8 @@ Ok so, I have used AI to help me set up the sign in/login process. I had to make
 I just finished the sign up/login part and can now start on the functionality of the page. I actaully enjoyed the process and found it interesting. I didn't know of all the cases that go into this process. 
 
 I will need more help from AI for how to do calls to the database to get, update, delete, and post data. I will also need to hook up email confirmation but that is a later task, after I am ready to launch it. 
+
+Current To-do -
+- functionality for adding yarn to the db (need a service call)
+- functionality for the different views (might need to add table row for that)
+- functionality for editing yarn via clicking the card (need service call)
