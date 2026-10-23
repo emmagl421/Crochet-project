@@ -38,3 +38,17 @@ Current To-do -
 - functionality for adding yarn to the db (need a service call)
 - functionality for the different views (might need to add table row for that)
 - functionality for editing yarn via clicking the card (need service call)
+
+10/22/2026 --------
+So turns I still have work to do for the login so I am doing that now. I'm also learning that with Supabase, I don't need a lot of what I was thinking I did.
+
+The goal right now is to finish up the login/sign in handling. Then maybe I can work on other functionality. 
+
+I also want to ask the crochet club if I could send a survey/come talk in person to get data on features they would find useful. This is to (hopefully) include some HCI into this. So, I must add it to the todo list.
+
+Current To-do -
+- finish login/sign up
+- Reach out to the crochet club for input 
+- functionality for adding yarn to the db (need a service call)
+- functionality for the different views (might need to add table row for that)
+- functionality for editing yarn via clicking the card (need service call)
