@@ -52,3 +52,20 @@ Current To-do -
 - functionality for adding yarn to the db (need a service call)
 - functionality for the different views (might need to add table row for that)
 - functionality for editing yarn via clicking the card (need service call)
+
+
+
+10/26/2026 --------
+I did a hackathon over the weeekend so now I am back working on this. 
+
+Claude (my beloved) walked me through the finsihed script and I typed it by hand to catch any errors that 
+could be there. 
+
+There are a few things I want to add. Like a view selector for the color categories. Making it seperate from the search does two things: 
+1) Allows for faster and easier search for any color in a category (initial reason)
+2) Some color names given by brands might not match with the category the user puts it in (So searching a category (i.e. Red) will show color names as well)
+
+Current To-do -
+- Reach out to the crochet club for input 
+- Functionality for editing yarn via clicking the card (need service call)
+- Color category views 
