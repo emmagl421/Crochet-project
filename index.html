@@ -132,6 +132,7 @@
                             <div class="field">
                                 <label for="color-input">Color name</label>
                                 <input id="color-input" class="ys-input" type="text" name="colors" placeholder="e.g. Dusty Rose">
+                                <small class="field-error">Enter a color name.</small>
                             </div>
 
                             <div class="field dropdown weight">
@@ -148,11 +149,13 @@
                                     <li class="dropdown-item">6-Super Bulky</li>
                                     <li class="dropdown-item">7-Jumbo</li>
                                 </ul>
+                                <small class="field-error">Pick a weight.</small>
                             </div>
 
                             <div class="field">
                                 <label for="skeins-input">Skeins</label>
                                 <input id="skeins-input" class="ys-input" type="number" name="skeins" min="1" placeholder="How many?">
+                                <small class="field-error">Enter number of skeins.</small>
                             </div>
 
                             <fieldset class="field field-full">
@@ -197,11 +200,13 @@
                             <div class="field">
                                 <label for="email-input" id="email-title">Email</label>
                                 <input class="ys-input login-input" id="email-input" type="email" name="email" autocomplete="email" placeholder="you@example.com">
+                                <small class="field-error"></small> 
                             </div>
                             <div class="field">
                                 <div class="label-row">
                                     <label for="password-input" id="password-title">Password</label>
                                     <button type="button" class="link-btn" id="login-help">Forgot password?</button>
+                                    <small class="field-error"></small> 
                                 </div>
                                 <input class="ys-input login-input" id="password-input" type="password" name="password" autocomplete="current-password" placeholder="Enter your password">
                             </div>

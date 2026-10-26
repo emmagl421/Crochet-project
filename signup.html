@@ -54,6 +54,7 @@
                         <div class="field">
                             <label for="signup-email">Email</label>
                             <input id="signup-email" class="ys-input" type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+                            <small class="field-error"></small> 
                         </div>
 
                         <div class="field">
@@ -65,11 +66,13 @@
                                 </button>
                             </div>
                             <small id="password-hint" class="field-hint">Use 8 or more characters.</small>
+                            <small class="field-error"></small> 
                         </div>
 
                         <div class="field">
                             <label for="signup-confirm">Confirm password</label>
                             <input id="signup-confirm" class="ys-input" type="password" name="confirm" autocomplete="new-password" placeholder="Type it again" required>
+                            <small class="field-error"></small> 
                         </div>
 
                         <button type="submit" id="signup-btn" class="btn-primary-ys w-100">Create account</button>

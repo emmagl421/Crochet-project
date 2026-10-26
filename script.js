@@ -15,6 +15,37 @@ $(document).ready(function () {
             .addClass(type === "error" ? "is-error" : "is-success");  
     }
 
+    //Checks the email is valid
+    function emailCheck(email) {
+        if (!email) {
+            return 'Enter your email.';
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+            return 'Please enter a valid email address';
+        }
+        return '';
+    }
+
+    //Handles the required fields function
+    function setFieldError($input, message) {
+        const $note = $input.closest('.field').find('.field-error');
+        $input.toggleClass('is-invalid', !!message); //Clears when message is ''
+        $note.text(message);
+    }
+
+    //Moves cursor to first red field to start typing
+    function focusFirstError (container) {
+        const $first = $(container).find('.is-invalid').first();
+        $first.trigger('focus');
+        return $first.length > 0;
+    };
+
+    //Clear the red field when user starts typing
+    $('.ys-input').on('input', function () {
+        $(this).removeClass('is-invalid');
+    });
+
+
     //--------Checks if a user is logged in-------
     async function getCurrentUser() {
         const { data: { user } } = await db.auth.getUser();
@@ -34,20 +65,34 @@ $(document).ready(function () {
             const confirm = $("#signup-confirm").val();
 
             //Check for valid formats 
-            if (!email || !password) {
-                showMessage("signup-message", "Enter your email and a password.", "error");
+            $('#signup-message').addClass('d-none');
+
+            //Check password
+            let passwordProb = '';
+            if (!password) {
+                passwordProb = 'Enter a password';
+            }
+            else if (password.length < 8) {
+                passwordProb = 'Please use at lest 8 characters.'
+            }
+
+            //Check confirm password
+            let confirmProb = '';
+            if (!confirm) {
+                confirmProb = 'Please confirm your password';
+            }
+            else if (confirm !== password) {
+                confirmProb = `Passwords don't match.`;
+            }
+
+            //Mark all the fields at once 
+            setFieldError($('#signup-email'), emailCheck(email));
+            setFieldError($('#signup-password'), passwordProb);
+            setFieldError($('#signup-confirm'), confirmProb);
+
+            if (focusFirstError('#signup-form')) {
                 return;
             }
-            if (password.length < 8) {
-                showMessage("signup-message", "Your password must be at least 8 characters.", "error");
-                return;
-            }
-            if (password !== confirm) {
-                showMessage("signup-message", "Passwords don't match.", "error");
-                $("#signup-confirm").addClass("is-invalid");
-                return;
-            }
-            $("#signup-confirm").removeClass("is-invalid");
 
             $("#signup-btn").prop("disabled", true).text("Creating account...");
 
@@ -85,9 +130,13 @@ $(document).ready(function () {
             const password = $('#login-password').val();
 
             //Check user data
-            if (!email || !password) {
-                showMessage('login-message', 'Enter your email and password.', 'error');
-                return
+            $('#login-message').addClass('d-none');
+
+            setFieldError($('#login-email'), emailCheck(email));
+            setFieldError($('#login-password'), password ? '' : 'Enter your password.');
+
+            if (focusFirstError('#login-form')) {
+                return;
             }
 
             //Attempt to log in
@@ -95,7 +144,7 @@ $(document).ready(function () {
             const { error } = await db.auth.signInWithPassword({ email, password });
 
             //Reset the button
-            $('login-btn').prop('disabled', false).text('Log in');
+            $('#login-btn').prop('disabled', false).text('Log in');
 
             //Handle failed attempts
             if (error) {
@@ -124,7 +173,7 @@ $(document).ready(function () {
     }
 
     //Toggle the password visability 
-    $('.toggle-visability').on('click', function() {
+    $('.toggle-visibility').on('click', function() {
         const $input = $(this).siblings('input'); //finds input next ot the button
         const show = $input.attr('type') === 'password';
         $input.attr('type', show ? 'text' : 'password'); //Changes it from hidden to not hidden
@@ -139,7 +188,7 @@ $(document).ready(function () {
     //Handles the displaying of yarn
     if ($('.yarn-cards').length) {
         //Starts with full inventory showing 
-        let currentFilter = 'inventory';
+        let currentFilter = 'all';
 
         //Saves the values for when yarn is added
         let selectedWeight = null;
@@ -166,7 +215,7 @@ $(document).ready(function () {
                 .attr('aria-label', isFav ? 'Remove from favorites' : 'Add to favorites'); //Allows for the screen reader to ssee if favorite
 
             //Fills the star if isFav is true and clears it if false
-            $btn.find('i').toggleclass('bi-star-fill', isFav).toggleClass('bi-star', !isFav);
+            $btn.find('i').toggleClass('bi-star-fill', isFav).toggleClass('bi-star', !isFav);
         }
 
         //Builds a yarn card from a database row 
@@ -195,7 +244,7 @@ $(document).ready(function () {
             $card.find('.yarn-brand').text(yarn.brand || '');
             $card.find('.yarn-weight').text(yarn.weight || '-');
             $card.find('.yarn-skeins').text(yarn.skeins ?? 0); //If the value of the skeins is null/undefined then put 0
-            setFavIcon($card.find('.fav-btn'), yarn.favorite);
+            setFavStar($card.find('.fav-btn'), yarn.favorite);
 
             return $card;
         }
@@ -238,7 +287,7 @@ $(document).ready(function () {
             //% matches the term to anything with the term in it 
             //ilike ignores capitals
             if (term) {
-                query = query.ot(`brand.ilike.%${term}%,colorname.ilike.%${term}%,weight.ilike.%${term}%,category.ilike.%${term}%`);
+                query = query.or(`brand.ilike.%${term}%,colorname.ilike.%${term}%,weight.ilike.%${term}%,category.ilike.%${term}%`);
             }
 
             const { data, error } = await query;
@@ -263,7 +312,7 @@ $(document).ready(function () {
 
         //Clears the yarn form
         function resetYarnForm() {
-            $('#brand-input, #color-input, #skeins-input').val('');
+            $('#brands-input, #color-input, #skeins-input').val('');
             $('#color-picker').val('#B580D4');
             selectedWeight = null;
             $('#weight-drop-down').text('Select a weight').css('color', '');
@@ -274,7 +323,7 @@ $(document).ready(function () {
         //Load stash 
         loadYarn();
 
-        //---------------- Button ----------------
+        //---------------- Buttons ----------------
         //Add yarn button
         $('#addYarn').on('click', async function() {
             //Not logined in -> ask to login
@@ -315,7 +364,7 @@ $(document).ready(function () {
 
 
         //Handles the favorite star 
-        $('yarn-cards').on('click', '.fav-btn', async function (event) {
+        $('.yarn-cards').on('click', '.fav-btn', async function (event) {
             //Stop this from messing with other card 
             event.stopPropagation();
             const $btn = $(this); //The star that was clicked 
@@ -333,7 +382,7 @@ $(document).ready(function () {
             
             //If it doesn't work
             if (error) {
-                setFavIcon($btn, !newValue); //Cheange it back on error
+                setFavStar($btn, !newValue); //Cheange it back on error
                 alert( `Couldn't update favorites. Try again.`);
                 return;
             }
@@ -346,5 +395,112 @@ $(document).ready(function () {
                 if ($('.yarn-cards .yarn-card').length === 0) showEmpty(emtpyStash.favs);
             }
         });
-    }
+
+        //-------- Add yarn Modal --------
+        //Weight dropdown
+        $('.ys-dropdown .dropdown-item').on('click', function () {
+            selectedWeight = $(this).text().trim(); //Get the selected weight
+            $('#weight-drop-down').text(selectedWeight).css('color', 'var(--ink)'); //Changes the text to the selectedWeight
+            $('#weight-drop-down').removeClass('is-invalid'); //Resets the required settings after being chosen
+        });
+
+        //If you close the modal, clear the red field
+        $('#addYarnModal').on('hidden.bs.modal', function () {
+            $('#addYarnModal .is-invalid').removeClass('is-invalid');
+        });
+
+        $('#login-modal').on('hidden.bs.modal', function () {
+            $('#login-modal .is-invalid').removeClass('is-invalid');
+        });
+
+
+        //Color category
+        $('.color-btn').on('click', function () {
+            $('.color-btn').removeClass('selected'); //Removes the select from all buttons
+            $(this).addClass('selected'); //Add the select to the clicked button
+            selectedCategory = this.id;
+        });
+
+        //Saving a new yarn
+        $('#addYarnModal #addBtn').on('click', async function () {
+            //Get the info from the modal
+            const colorname = $('#color-input').val().trim();
+            const brand = $('#brands-input').val().trim();
+            const skeinsRaw = $('#skeins-input').val();
+            const skeins = skeinsRaw === '' ? null : Number(skeinsRaw); 
+
+            //Check for required fields 
+            $('#color-input').toggleClass('is-invalid', !colorname);
+            $('#weight-drop-down').toggleClass('is-invalid', !selectedWeight);
+            $('#skeins-input').toggleClass('is-invalid', skeins === null || skeins < 0);
+
+            const $firstProblem = $('#addYarnModal .is-invalid').first();
+            if($firstProblem.length) {
+                $firstProblem.trigger('focus');
+                return;
+            }
+
+            const $btn = $(this).prop('disabled', true).text('Adding...');
+
+            //Try to insert the yarn 
+            const { error } = await db.from(table).insert({
+                brand: brand || null,
+                colorname: colorname,
+                color_rgb: $('#color-picker').val(),
+                weight: selectedWeight,
+                skeins: skeins,
+                category: selectedCategory
+            });
+
+            $btn.prop('disabled', false).text('Add yarn');
+
+            if (error) {
+                alert (`Couldn't add yarn: ` + error.message);
+                return;
+            }
+
+            //Reset the form and load yarn
+            resetYarnForm();
+            $('#addYarnModal').modal('hide');
+            loadYarn();
+        });
+
+        //-------- Login modal --------
+        $('#sign-up-login').on('click', function () {
+            window.location.href = 'signup.html';
+        });
+
+        $('#login-modal #addBtn').on('click', async function () {
+            const email = $('#email-input').val().trim();
+            const password = $('#password-input').val();
+
+            //Check for login in info
+            setFieldError($('#email-input'), emailCheck(email));
+            setFieldError($('#password-input'), password ? '' : 'Enter your password.');
+
+            if (focusFirstError('#login-modal')) {
+                return;
+            }
+
+            const $btn = $(this).prop('disabled', true).text('Logging in...');
+            const { error } = await db.auth.signInWithPassword({ email, password });
+
+            $btn.prop('disabled', false).text('Log in');
+
+            if (error) {
+                setFieldError($('#password-input'), error.message);
+                $('#password-input').trigger('focus');
+                return;
+            }
+
+            $('#password-input').val('');
+            loadYarn();
+
+            //Close box, open add yarn
+            $('#login-modal').one('hidden.bs.modal', function () {
+                $('#addYarnModal').modal('show');
+            });
+            $('#login-modal').modal('hide');
+        });
+    }   
 });
