@@ -13,7 +13,7 @@ A web app for knitters and crocheters to manage their yarn inventory: what they 
 - **Filtering:** view all yarn, favorites, in stock, or out of stock, and filter by color category
 - **Live search:** search by brand, color name, weight, or category as you type
 - **Favorites:** star yarn to save it to a favorites view
-- - **Accounts:** email and password sign up and log in with Supabase Auth, plus editing your name, email, or password. Public sign-up is hidden on the live site so visitors use the demo; the code is in `signup.html` and `login.html`.
+- **Accounts:** email and password sign up and log in with Supabase Auth, plus editing your name, email, or password. Public sign-up is hidden on the live site so visitors use the demo; the code is in `signup.html` and `login.html`.
 - **Demo mode:** visitors can try the app instantly in their own private sandbox, preloaded with sample yarn
 - **Responsive design:** works on desktop and mobile
 
@@ -55,6 +55,7 @@ A web app for knitters and crocheters to manage their yarn inventory: what they 
 ## Author 
 
 Emma Leonard: [LinkedIn](https://www.linkedin.com/in/emma-leonard2005/)
+
 
 ## Diary ------------------------------
 ### 10/20/2026 --------
