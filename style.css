@@ -863,3 +863,26 @@ input[type="color"]::-moz-color-swatch { border: none; }
     flex-direction: column;
     gap: 1rem;
 }
+
+.btn-outline-ys {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 0 1.25rem;
+    border: 1.5px solid var(--primary);
+    border-radius: 999px;
+    background: none;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: .975rem;
+    cursor: pointer;
+    transition: background-color .15s;
+}
+
+.btn-outline-ys:hover { background: var(--accent-soft); }
+
+.btn-outline-ys:disabled {
+    opacity: .7;
+    cursor: wait;
+}
