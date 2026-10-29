@@ -73,7 +73,7 @@ $(document).ready(function () {
                 passwordProb = 'Enter a password';
             }
             else if (password.length < 8) {
-                passwordProb = 'Please use at lest 8 characters.'
+                passwordProb = 'Please use at least 8 characters.';
             }
 
             //Check confirm password
@@ -156,6 +156,37 @@ $(document).ready(function () {
             window.location.href = 'index.html';
         });
     }
+    //Sample yarn so the demo isn't empty 
+    const sampleYarn = [
+        { colorname: 'Lavender Mist', brand: 'Malabrigo', color_rgb: '#7D80DA', weight: '4-Medium', skeins: 3, category: 'purple', favorite: true },
+        { colorname: 'Dusty Rose', brand: 'Lion Brand', color_rgb: '#C98B95', weight: '3-Light', skeins: 2, category: 'pink', favorite: false },
+        { colorname: 'Sage', brand: 'Cascade', color_rgb: '#9DB59A', weight: '5-Bulky', skeins: 0, category: 'green', favorite: false },
+        { colorname: 'Marigold', brand: 'Knit Picks', color_rgb: '#E9A93B', weight: '1-Superfine', skeins: 5, category: 'yellow', favorite: true }
+    ];
+
+    $('.demo-btn').on('click', async function() {
+        const boxId = $('#login-form').length ? 'login-message' : 'login-modal-message';
+        $('#' + boxId).addClass('d-none');
+
+        const $btn = $(this).prop('disabled', true).text('Setting up demo...');
+
+        const { error } = await db.auth.signInAnonymously({
+            options: { data: { name: 'Demo user' } }
+        });
+
+        if (error) {
+            $btn.prop('disabled', false).text('Try the demo');
+            showMessage(boxId, `Couldn't start the demo. Please try again.`, 'error');
+            return;
+        }
+
+        const { error: yarnErr } = await db.from(table).insert(sampleYarn);
+        if (yarnErr) {
+            console.error(yarnErr);
+        }
+
+        window.location.href = 'index.html';
+    });
 
 
     async function checkLogin() {
@@ -189,14 +220,17 @@ $(document).ready(function () {
     if ($('.yarn-cards').length) {
         //Starts with full inventory showing 
         let currentFilter = 'all';
+        let currentCategory = null;
 
         //Saves the values for when yarn is added
         let selectedWeight = null;
         let selectedCategory = null;
+        let editingId = null;
+        let afterLogin = null;
 
         //What to put if there is no yarn for a view
-        const emtpyStash = {
-            'all': 'Your stash is empty, Click "Add yarn" to add your fisrt skein!',
+        const emptyStash = {
+            'all': 'Your stash is empty. Click "Add yarn" to add your first skein!',
             'favs': 'No favorites yet. Click the star on a yarn to add it here!',
             'in-stock': 'Nothing in stock right now.',
             'out-of-stock': 'Nothing is out of stock.'
@@ -217,6 +251,33 @@ $(document).ready(function () {
             //Fills the star if isFav is true and clears it if false
             $btn.find('i').toggleClass('bi-star-fill', isFav).toggleClass('bi-star', !isFav);
         }
+
+        //Clicking a card opens the yarn for editing 
+        $('.yarn-cards').on('click', '.yarn-card', function () {
+            //Get the card that was clicked 
+            const yarn = $(this).data('yarn');
+            editingId = yarn.id;
+
+            //Fill in the modal text boxs with the yarn's current data 
+            $('#color-input').val(yarn.colorname);
+            $('#brands-input').val(yarn.brand || '');
+            $('#skeins-input').val(yarn.skeins ?? 0);
+            $('#color-picker').val(yarn.color_rgb || '#B580D4');
+
+            selectedWeight = yarn.weight;
+            $('#weight-drop-down').text(yarn.weight).css('color', 'var(--ink)');
+
+            selectedCategory = yarn.category;
+            $('.color-btn').removeClass('selected');
+            if (yarn.category) {
+                $('#addYarnModal #' + yarn.category).addClass('selected');
+            }
+
+            //Switch model title and open it 
+            $('#addYarnTitle').text('Edit yarn');
+            $('#addYarnModal #addBtn').text('Save changes');
+            $('#addYarnModal').modal('show');
+        });
 
         //Builds a yarn card from a database row 
         function buildCard(yarn) {
@@ -245,6 +306,7 @@ $(document).ready(function () {
             $card.find('.yarn-weight').text(yarn.weight || '-');
             $card.find('.yarn-skeins').text(yarn.skeins ?? 0); //If the value of the skeins is null/undefined then put 0
             setFavStar($card.find('.fav-btn'), yarn.favorite);
+            $card.data('yarn', yarn); //Keeps track of the database row for editing later 
 
             return $card;
         }
@@ -279,6 +341,11 @@ $(document).ready(function () {
                 query = query.eq('skeins', 0);
             }
 
+            //Gets the yarn based on the color category 
+            if (currentCategory) {
+                query = query.eq('category', currentCategory);
+            }
+
             //Search feature 
             //Removes any characters that will mess up the search
             const term = $('#yarn-search').val().replace(/[,(%*)]/g,' ').trim(); 
@@ -295,13 +362,21 @@ $(document).ready(function () {
             //Error while searching
             if(error) {
                 console.error(error);
-                showEmpty(`Couldn't load your yarn. Try refresheing the page.`);
+                showEmpty(`Couldn't load your yarn. Try refreshing the page.`);
                 return;
             }
 
             //No matching yarn
             if (data.length === 0) {
-                showEmpty(term ? 'No yarn matches your search.' : emtpyStash[currentFilter]);
+                if (term) {
+                    showEmpty('No yarn matches your search.');
+                }
+                else if (currentCategory) {
+                    showEmpty('No yarn in this category has been added yet.');
+                }
+                else {
+                    showEmpty(emptyStash[currentFilter]);
+                }
                 return;
             }
 
@@ -318,6 +393,12 @@ $(document).ready(function () {
             $('#weight-drop-down').text('Select a weight').css('color', '');
             selectedCategory = null;
             $('.color-btn').removeClass('selected');
+
+            editingId = null;
+            $('#addYarnTitle').text('Add new yarn');
+            $('#addYarnModal #addBtn').text('Add yarn');
+
+            $('#yarn-message').addClass('d-none');
         }
 
         //Load stash 
@@ -333,6 +414,7 @@ $(document).ready(function () {
                 $('#addYarnModal').modal('show');
             } 
             else { 
+                afterLogin = () => $('#addYarnModal').modal('show');
                 $('#login-modal').modal('show');
             }
         });
@@ -343,6 +425,26 @@ $(document).ready(function () {
             $(this).addClass('active');
             currentFilter = this.id === 'inventory' ? 'all' : this.id;
             loadYarn();
+        });
+
+        //Color category filters (handles selecting a category view)
+        $('.colorFilterBtn').on('click', function () {
+            const category = $(this).data('category');
+
+            //If you are clicking on the already selected category then, unselect it 
+            if (currentCategory === category) {
+                currentCategory = null;
+                $(this).removeClass('active');
+            }
+            else { //Otherwise, select the category
+                $('.colorFilterBtn').removeClass('active');
+                $(this).addClass('active');
+                currentCategory = category;
+            }
+
+            //Reload the yarn based on the category 
+            loadYarn();
+            
         });
 
         //Search timer: Wait for 300ms then load whats in the bar
@@ -392,7 +494,7 @@ $(document).ready(function () {
                 $card.remove();
                 
                 //If the favorites is empty after you remove this card then display empty
-                if ($('.yarn-cards .yarn-card').length === 0) showEmpty(emtpyStash.favs);
+                if ($('.yarn-cards .yarn-card').length === 0) showEmpty(emptyStash.favs);
             }
         });
 
@@ -407,10 +509,12 @@ $(document).ready(function () {
         //If you close the modal, clear the red field
         $('#addYarnModal').on('hidden.bs.modal', function () {
             $('#addYarnModal .is-invalid').removeClass('is-invalid');
+            resetYarnForm();
         });
 
         $('#login-modal').on('hidden.bs.modal', function () {
             $('#login-modal .is-invalid').removeClass('is-invalid');
+            $('#login-modal-message').addClass('d-none');
         });
 
 
@@ -429,6 +533,9 @@ $(document).ready(function () {
             const skeinsRaw = $('#skeins-input').val();
             const skeins = skeinsRaw === '' ? null : Number(skeinsRaw); 
 
+            //Hide old errors before new attempt
+            $('#yarn-message').addClass('d-none'); 
+
             //Check for required fields 
             $('#color-input').toggleClass('is-invalid', !colorname);
             $('#weight-drop-down').toggleClass('is-invalid', !selectedWeight);
@@ -440,37 +547,38 @@ $(document).ready(function () {
                 return;
             }
 
-            const $btn = $(this).prop('disabled', true).text('Adding...');
+            //Disable the btn
+            const $btn = $(this).prop('disabled', true).text(editingId ? 'Saving...' : 'Adding...');
 
-            //Try to insert the yarn 
-            const { error } = await db.from(table).insert({
+            //Get the values to save for both adding and editing 
+            const yarnData = {
                 brand: brand || null,
                 colorname: colorname,
                 color_rgb: $('#color-picker').val(),
                 weight: selectedWeight,
                 skeins: skeins,
                 category: selectedCategory
-            });
+            };
 
-            $btn.prop('disabled', false).text('Add yarn');
+            //Either edit or insert 
+            const request = editingId ? db.from(table).update(yarnData).eq('id', editingId) : db.from(table).insert(yarnData);
+
+            const { error } = await request;
+
+            //Re-enable the btn 
+            $btn.prop('disabled', false).text(editingId ? 'Save changes' : 'Add yarn');
 
             if (error) {
-                alert (`Couldn't add yarn: ` + error.message);
+                showMessage('yarn-message', `Couldn't save yarn: ` + error.message, 'error');
                 return;
             }
 
-            //Reset the form and load yarn
-            resetYarnForm();
             $('#addYarnModal').modal('hide');
             loadYarn();
         });
 
         //-------- Login modal --------
-        $('#sign-up-login').on('click', function () {
-            window.location.href = 'signup.html';
-        });
-
-        $('#login-modal #addBtn').on('click', async function () {
+        $('#loginModalBtn').on('click', async function () {
             const email = $('#email-input').val().trim();
             const password = $('#password-input').val();
 
@@ -498,9 +606,171 @@ $(document).ready(function () {
 
             //Close box, open add yarn
             $('#login-modal').one('hidden.bs.modal', function () {
-                $('#addYarnModal').modal('show');
+                if (afterLogin) {
+                    afterLogin();
+                }
+                afterLogin = null;
             });
+
             $('#login-modal').modal('hide');
+        });
+
+        //-------- Account modal --------
+        //Fill in modal with user info and stash totals 
+        async function fillAccount(user) {
+            //Get the users name if there is one 
+            const name = user.user_metadata?.name || '';
+
+            $('#account-name').text(name || 'No name added');
+            $('#account-email').text(user.email || 'Demo account');
+            $('#account-initial').text((name || user.email).charAt(0).toUpperCase());
+            $('#account-since').text(new Date(user.created_at).toLocaleDateString(undefined, {month: 'short', year: 'numeric'}));
+
+            //Show dashes while totals load 
+            $('#account-yarn-count, #account-skein-count').text('-');
+
+            //Get skeins column for the stash totals 
+            const { data, error } = await db.from(table).select('skeins').eq('user_id', user.id);
+
+            //Leaves the dashes if the total can't load 
+            if (error) {
+                console.error(error);
+                return; 
+            }
+
+            const totalSkeins = data.reduce((sum, yarn) => sum + (yarn.skeins ?? 0), 0);
+            $('#account-yarn-count').text(data.length);
+            $('#account-skein-count').text(totalSkeins);
+
+            $('#editAccountBtn').toggleClass('d-none', !!user.is_anonymous);
+        }
+
+        //Opens the account modal
+        async function openAccount() {
+            const user = await getCurrentUser();
+            if (!user) {
+                afterLogin = openAccount; //Come here after logging in
+                $('#login-modal').modal('show');
+                return;
+            }
+
+            //Open modal without await and load info in with await
+            fillAccount(user); 
+            $('#account-modal').modal('show');
+        }
+
+        //Switch between viewing and editing 
+        function setAccountEditing(on) {
+            $('#account-modal').toggleClass('is-editing', on);
+            $('#accountTitle').text(on ? 'Edit account' : 'Your account');
+            $('#account-message').addClass('d-none');
+            $('#account-modal .is-invalid').removeClass('is-invalid');
+        }
+
+        //Edit account info
+        $('#editAccountBtn').on('click', async function () {
+            //Get the user 
+            const user = await getCurrentUser();
+            if (!user) {
+                return;
+            }
+
+            //Fill in account info
+            $('#account-name-input').val(user.user_metadata?.name || '');
+            $('#account-email-input').val(user.email);
+            $('#account-password-input').val(''); //Don't prefill passwords
+
+            //Put in editing mode 
+            setAccountEditing(true);
+            $('#account-name-input').trigger('focus');
+        });
+
+        //Cancel without saving
+        $('#cancelAccountBtn').on('click', function () {
+            setAccountEditing(false);
+        });
+
+        //Changing and saving user account info
+        $('#saveAccountBtn').on('click', async function () {
+            const user = await getCurrentUser();
+            if (!user) {
+                return;
+            }
+
+            //Get the info from the user 
+            const name = $('#account-name-input').val().trim();
+            const email = $('#account-email-input').val().trim();
+            const password = $('#account-password-input').val();
+
+            //Check the new input to make sure it is valid
+            setFieldError($('#account-email-input'), emailCheck(email));
+            setFieldError($('#account-password-input'),
+                password && password.length < 8 ? 'Please use at least 8 characters.' : '');
+            
+            if (focusFirstError('#account-modal')) {
+                return;
+            }
+
+            //Build object with the changed info
+            const changes = {};
+            if (name !== (user.user_metadata?.name || '')) {
+                changes.data = { name: name };
+            }
+            if (email !== user.email) {
+                changes.email = email;
+            }
+            if (password) {
+                changes.password = password;
+            }
+
+            //If nothing changed, go back to normal view 
+            if (Object.keys(changes).length === 0) {
+                setAccountEditing(false);
+                return;
+            }
+
+            //Change the button and save the info
+            const $btn = $(this).prop('disabled', true).text('Saving...');
+            const { data, error } = await db.auth.updateUser(changes);
+            $btn.prop('disabled', false).text('Save changes');
+
+            if (error) {
+                showMessage('account-message', `Couldn't save changes: ` + error.message, 'error');
+                return;
+            }
+
+            //Show the updated info 
+            setAccountEditing(false);
+            fillAccount(data.user);
+
+            if (changes.email) {
+                showMessage('account-message', `Check your email to confirm the change to ${email}. Your email will update after you click the link.`, 'success');
+            }
+            else {
+                showMessage('account-message', 'Your account has been updated.', 'success');
+            }
+        });
+
+        $('#accountBtn').on('click', openAccount);
+
+        //Log out 
+        $('#logoutBtn').on('click', async function () {
+            const $btn = $(this).prop('disabled', true).text('Logging out...');
+            const { error } = await db.auth.signOut();
+            $btn.prop('disabled', false).text('Log out');
+
+            if (error) {
+                showMessage('account-message', `Couldn't log out: ` + error.message, 'error');
+                return;
+            }
+
+            $('#account-modal').modal('hide');
+            loadYarn();
+        });
+
+        $('#account-modal').on('hidden.bs.modal', function () {
+            setAccountEditing(false);
+            $('#account-password-input').val('');
         });
     }   
 });

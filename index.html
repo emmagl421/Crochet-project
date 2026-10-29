@@ -28,12 +28,15 @@
             <!--Top bar-->
             <header class="topbar">
                 <h1 class="wordmark">Yarn Stash</h1>
+                <button type="button" class="account-btn" id="accountBtn" aria-label="Your account">
+                    <i class="bi bi-person-circle" aria-hidden="true"></i>
+                </button>
             </header>
 
             <div class="app-body">
                 <!--Sidebar-->
                 <aside class="sidebar" aria-label="Filter inventory">
-                    <nav class="sidebar-nav">
+                    <nav class="sidebar-nav" aria-label="Views">
                         <button class="sidebarBtn active" id="inventory">
                             <i class="bi bi-grid" aria-hidden="true"></i>
                             <span>All inventory</span>
@@ -50,6 +53,22 @@
                             <i class="bi bi-dash-circle" aria-hidden="true"></i>
                             <span>Out of stock</span>
                         </button>
+                    </nav>
+
+                    <!--Color filters (colors come from style.css so they match the modal)-->
+                    <h2 class="sidebar-label">Colors</h2>
+                    <nav class="sidebar-nav" aria-label="Colors">
+                        <button class="colorFilterBtn" data-category="brown"><span class="swatch swatch-brown" aria-hidden="true"></span><span>Brown</span></button>
+                        <button class="colorFilterBtn" data-category="pink"><span class="swatch swatch-pink" aria-hidden="true"></span><span>Pink</span></button>
+                        <button class="colorFilterBtn" data-category="red"><span class="swatch swatch-red" aria-hidden="true"></span><span>Red</span></button>
+                        <button class="colorFilterBtn" data-category="orange"><span class="swatch swatch-orange" aria-hidden="true"></span><span>Orange</span></button>
+                        <button class="colorFilterBtn" data-category="yellow"><span class="swatch swatch-yellow" aria-hidden="true"></span><span>Yellow</span></button>
+                        <button class="colorFilterBtn" data-category="green"><span class="swatch swatch-green" aria-hidden="true"></span><span>Green</span></button>
+                        <button class="colorFilterBtn" data-category="blue"><span class="swatch swatch-blue" aria-hidden="true"></span><span>Blue</span></button>
+                        <button class="colorFilterBtn" data-category="purple"><span class="swatch swatch-purple" aria-hidden="true"></span><span>Purple</span></button>
+                        <button class="colorFilterBtn" data-category="black"><span class="swatch swatch-black" aria-hidden="true"></span><span>Black</span></button>
+                        <button class="colorFilterBtn" data-category="white"><span class="swatch swatch-white" aria-hidden="true"></span><span>White</span></button>
+                        <button class="colorFilterBtn" data-category="multi"><span class="swatch swatch-multi" aria-hidden="true"></span><span>Multicolor</span></button>
                     </nav>
                 </aside>
 
@@ -78,31 +97,7 @@
 
                     <!--Cards get added here-->
                     <div class="yarn-cards">
-                        <!--Example card for testing-->
-                        <article class="yarn-card" id="0">
-                            <div class="color-box" style="background-color: #C98B95;"></div>
-
-                            <button id="favBtn" class="fav-btn" aria-label="Add to favorites">
-                                <i class="bi bi-star" id="star"></i>
-                            </button>
-
-                            <div class="yarn-attributes">
-                                <div class="yarn-title">
-                                    <div class="yarn-color-name" id="color">Dusty Rose</div>
-                                    <div class="yarn-brand" id="brand">Lion Brand</div>
-                                </div>
-                                <dl class="yarn-meta">
-                                    <div>
-                                        <dt>Weight</dt>
-                                        <dd id="weight">Worsted</dd>
-                                    </div>
-                                    <div>
-                                        <dt>Skeins</dt>
-                                        <dd id="skeins">3</dd>
-                                    </div>
-                                </dl>
-                            </div>
-                        </article>
+                        <!--Yarn cards go here-->
                     </div>
                 </main>
             </div>
@@ -114,10 +109,13 @@
                 <div class="modal-content ys-modal custom-addYarn-modal">
                     <div class="modal-header">
                         <h2 class="modal-title" id="addYarnTitle">Add new yarn</h2>
-                        <button type="button" id="close-btn" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">
+                        <!--Error message box (shown by script.js when saving fails)-->
+                        <div id="yarn-message" class="auth-message d-none" role="alert"></div>
+
                         <div id="color-banner">
                             <input id="color-picker" type="color" value="#B580D4" aria-label="Pick the yarn color">
                             <span class="color-banner-hint"><i class="bi bi-eyedropper" aria-hidden="true"></i> Tap to match the color</span>
@@ -154,7 +152,7 @@
 
                             <div class="field">
                                 <label for="skeins-input">Skeins</label>
-                                <input id="skeins-input" class="ys-input" type="number" name="skeins" min="1" placeholder="How many?">
+                                <input id="skeins-input" class="ys-input" type="number" name="skeins" min="0" placeholder="How many?">
                                 <small class="field-error">Enter number of skeins.</small>
                             </div>
 
@@ -191,34 +189,97 @@
                 <div class="modal-content ys-modal login-modal-content">
                     <div class="modal-header">
                         <h2 class="modal-title" id="loginTitle">Log in</h2>
-                        <button type="button" id="close-btn" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div id="login" class="modal-body">
-                        <p class="modal-lede">Log in to add yarn to your stash.</p>
+                        <!--For error messages-->
+                        <div id="login-modal-message" class="auth-message d-none" role="alert"></div>
+
+                        <p class="modal-lede">Log in to your stash, or try the demo to look around.</p>
                         <div class="login-info">
                             <div class="field">
                                 <label for="email-input" id="email-title">Email</label>
                                 <input class="ys-input login-input" id="email-input" type="email" name="email" autocomplete="email" placeholder="you@example.com">
-                                <small class="field-error"></small> 
+                                <small class="field-error"></small>
                             </div>
                             <div class="field">
                                 <div class="label-row">
                                     <label for="password-input" id="password-title">Password</label>
                                     <button type="button" class="link-btn" id="login-help">Forgot password?</button>
-                                    <small class="field-error"></small> 
                                 </div>
                                 <input class="ys-input login-input" id="password-input" type="password" name="password" autocomplete="current-password" placeholder="Enter your password">
+                                <small class="field-error"></small>
                             </div>
                         </div>
                     </div>
 
                     <div class="modal-footer login-footer">
-                        <button type="button" id="addBtn" class="btn-primary-ys w-100">Log in</button>
-                        <p class="signup-row">
-                            New here?
-                            <button type="button" class="link-btn" id="sign-up-login">Create an account</button>
-                        </p>
+                        <button type="button" id="loginModalBtn" class="btn-primary-ys w-100">Log in</button>
+                        <button type="button" class="btn-ghost-ys w-100 demo-btn">Try the demo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Account modal-->
+        <div class="modal fade" id="account-modal" tabindex="-1" aria-labelledby="accountTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content ys-modal">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="accountTitle">Your account</h2>
+                        <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div id="account-message" class="auth-message d-none" role="alert"></div>
+
+                        <!--View mode: account info-->
+                        <div class="view-only">
+                            <div class="account-profile">
+                                <div class="account-avatar" id="account-initial" aria-hidden="true"></div>
+                                <div>
+                                    <div class="account-name" id="account-name"></div>
+                                    <div class="account-email" id="account-email"></div>
+                                </div>
+                            </div>
+
+                            <dl class="account-stats">
+                                <div><dt>Yarns</dt><dd id="account-yarn-count">–</dd></div>
+                                <div><dt>Skeins</dt><dd id="account-skein-count">–</dd></div>
+                                <div><dt>Member since</dt><dd id="account-since">–</dd></div>
+                            </dl>
+                        </div>
+
+                        <!--Edit mode: form-->
+                        <div class="account-edit edit-only">
+                            <div class="field">
+                                <label for="account-name-input">Name</label>
+                                <input id="account-name-input" class="ys-input" type="text" autocomplete="name" placeholder="Your name">
+                            </div>
+
+                            <div class="field">
+                                <label for="account-email-input">Email</label>
+                                <input id="account-email-input" class="ys-input" type="email" autocomplete="email">
+                                <small class="field-error"></small>
+                            </div>
+
+                            <div class="field">
+                                <label for="account-password-input">New password</label>
+                                <input id="account-password-input" class="ys-input" type="password" autocomplete="new-password" placeholder="Leave blank to keep your current one">
+                                <small class="field-error"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <!--View mode buttons-->
+                        <button type="button" id="editAccountBtn" class="btn-ghost-ys view-only">Edit info</button>
+                        <button type="button" id="logoutBtn" class="btn-primary-ys view-only">Log out</button>
+
+                        <!--Edit mode buttons-->
+                        <button type="button" id="cancelAccountBtn" class="btn-ghost-ys edit-only">Cancel</button>
+                        <button type="button" id="saveAccountBtn" class="btn-primary-ys edit-only">Save changes</button>
                     </div>
                 </div>
             </div>
