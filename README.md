@@ -1,27 +1,60 @@
-# Main Information ------------------------------
-Project: Yarn stash 
-Author: Emma Leonard 
-Description: A website that allows storage of different types of yarn 
+# Yarn Stash
 
-## Development Plan --
-- Create the web site layout
-- Add functionality with JavaScript
-- Implement a server with JavaScript and Node.js
-- Hook up a database (Supabase)
+A web app for knitters and crocheters to manage their yarn inventory: what they have, how much is left, and which colors they love.
 
-## Functionality --
-- Users should be able to log in and out of their account 
-- Users should be able to add and delete yarn from their storage
-- Users should be able to sort their yarn based on color they believe it is 
-- Users should be able to filter their yarn based on color, in stock, out of stock, and favorites
-- Users should be able to search for specific yarn based on color, color category, brand and weight
+**[Try the live demo](https://emmagl421.github.io/Crochet-project/)** (click "Try the demo", no account needed)
 
-## What I learned 
-- Database management (Supabase)
-- Handling sign in/logins (Supabase auth and JaveScript handling)
-- Communicating with databases through JavaScript
-- JavaScript HTML manipulation 
-- Handling search queries 
+![Yarn Stash main page](images/screenshot.png)
+
+
+## Features
+
+- **Personal stash:** add and edit yarn with brand, color name, weight, skein count, and an exact color picked with a color picker
+- **Filtering:** view all yarn, favorites, in stock, or out of stock, and filter by color category
+- **Live search:** search by brand, color name, weight, or category as you type
+- **Favorites:** star yarn to save it to a favorites view
+- - **Accounts:** email and password sign up and log in with Supabase Auth, plus editing your name, email, or password. Public sign-up is hidden on the live site so visitors use the demo; the code is in `signup.html` and `login.html`.
+- **Demo mode:** visitors can try the app instantly in their own private sandbox, preloaded with sample yarn
+- **Responsive design:** works on desktop and mobile
+
+## Tech Stack
+
+- **Front end:** HTML, CSS, JavaScript, jQuery, Bootstrap 5
+- **Back end:** Supabase (PostgreSQL database and authentication)
+- **Hosting:** GitHub Pages
+
+## Security
+
+- **Row Level Security:** database policies ensure each user can only read and change their own yarn, enforced by the database rather than the front end
+- **Isolated demo accounts:** each demo visitor gets an anonymous account with its own data, so visitors can't see or change each other's yarn
+- **Safe rendering:** user input is displayed with jQuery's `.text()`, which prevents HTML or script injection
+- **No secrets in the code:** only Supabase's public key is in the front end; passwords are handled and hashed by Supabase
+
+## What I Learned
+
+- Designing a database table and writing Row Level Security policies in SQL so users' data stays private
+- Handling sign up, log in, and anonymous sessions with Supabase Auth
+- Building search and filters that combine into a single database query
+- Updating the page dynamically with jQuery, including optimistic updates for favorites that roll back if saving fails
+- Writing form validation with clear, accessible error messages
+
+## Future Improvements
+
+- Delete yarn from your stash
+- Password reset by email
+- Track yarn by project
+
+## Running Locally
+
+**Requires:** Node.js
+
+1. Clone the repo
+2. In the project folder, run `npx serve`
+3. Open the address it prints (usually `http://localhost:3000`)
+
+## Author 
+
+Emma Leonard: [LinkedIn](https://www.linkedin.com/in/emma-leonard2005/)
 
 ## Diary ------------------------------
 ### 10/20/2026 --------
