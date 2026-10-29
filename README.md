@@ -120,7 +120,7 @@ I am currently making sure everything is safely set up and handled throughout Su
 
 Ok, I found a solution: I am going to make this a demo site. It's just a fun personal project and I have learned a lot from it. I really don't feel comfortable handling emails and passwords. So this will just be a demo/proof of concept site. I will keep the code for the login/signup but I won't use it.
 
-## 10/29/2026
+### 10/29/2026
 Ok I think this is almost done so I will try and finish it today. After I finish it I will post it to GitHub pages. 
 
 I haven't gotten a response from the crochet club but I will make the survey anyway and hope they respond.
